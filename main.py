@@ -88,7 +88,7 @@ def df_factory(links: list, sleep_time: int=10) -> pd.DataFrame:
         sleep(sleep_time)
         # verbose output
         if i % 10 == 0:
-            logger.info(f"Progress: {i} of {len(links)}")
+            logger.info(f"Progress: {i+1} of {len(links)}")
     df = pd.concat(dfs, sort=False).reset_index(drop=True)
     return df
 
@@ -105,7 +105,7 @@ def main(input_filename, output_filename, sleep_time):
     links = link_factory(input_df)
     df = df_factory(links, sleep_time)
     df.to_csv(Path(output_filename))
-    logger.info(f"wrote combined DataFrame to {output}")
+    logger.info(f"wrote combined DataFrame to {output_filename}")
 
 
 if __name__ == "__main__":
