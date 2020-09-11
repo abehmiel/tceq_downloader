@@ -67,18 +67,18 @@ def visit_link_and_load_df(url: str) -> pd.DataFrame:
     temp_xls = None
     try:
         # Windows suckage - needs xls and to stay on disk after open context
-        with NamedTemporaryFile(suffix='.xls', delete=False) as temp_xls:
+        with open('temp.xls', 'wb') as temp_xls:
             # write excel binary
             # you can't read excel from memory, apparently
             temp_xls.write(r.content)
-            # load named file and append to dfs
-            df = pd.read_excel(temp_xls.name)
+        # load named file and append to dfs
+        df = pd.read_excel("temp.xls")
     except:
         logger.warning(f"could not handle temporary file for {url}")
         df = pd.DataFrame()
     finally:
         if temp_xls is not None:
-            os.remove(temp_xls.name)
+            os.remove("temp.xls")
         return df
 
 
