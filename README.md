@@ -1,5 +1,9 @@
 # TCEQ database downloader
 
+## Requirements:
+
+`click pandas requests`
+
 ## Instructions: 
 
 - Make a query into TCEQ here: https://www2.tceq.texas.gov/oce/eer/
