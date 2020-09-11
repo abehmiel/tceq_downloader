@@ -4,7 +4,7 @@
 
 `python >= 3.6.1`
 
-`click pandas requests`
+`click pandas requests xlrd`
 
 ## Instructions: 
 
