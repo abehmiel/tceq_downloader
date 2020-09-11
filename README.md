@@ -10,6 +10,12 @@
 
 - Download the .xlsx file near the top of the page to the working directory
 
+- Create and activate a conda environment for the project: 
+
+`conda env create -f environment.yml`
+
+`conda activate tceq`
+
 - Use the command line to run main.py with arguments:
 
 `python main.py --input-filename="sample.xlsx" --output-filename="out.csv" --sleep-time=10`
