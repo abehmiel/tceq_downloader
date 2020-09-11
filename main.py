@@ -7,6 +7,7 @@ __copyright__   = "Copyright 2020"
 
 import os
 import logging
+from typing import List
 from time import sleep
 from tempfile import NamedTemporaryFile
 from pathlib import Path
@@ -36,7 +37,7 @@ def load_input_data(filename: Path) -> pd.DataFrame:
         raise ValueError("Input file could not be found")
 
 
-def link_factory(df: pd.DataFrame) -> list:
+def link_factory(df: pd.DataFrame) -> List[str]:
     """
     Transforms an input dataframe of tceq incidents to a
     list of urls to visit to download complete incident data
@@ -82,7 +83,7 @@ def visit_link_and_load_df(url: str) -> pd.DataFrame:
         return df
 
 
-def df_factory(links: list, sleep_time: int=10) -> pd.DataFrame:
+def df_factory(links: List[str], sleep_time: int=5) -> pd.DataFrame:
     """
     iterate over all the links, grab their data and
     accumulate into a dataframe
@@ -105,9 +106,9 @@ def df_factory(links: list, sleep_time: int=10) -> pd.DataFrame:
               help='the input filename from original TCEQ query')
 @click.option('--output-filename', default="output.csv",
               help='the output csv filename')
-@click.option('--sleep-time', default=10,
+@click.option('--sleep-time', default=5,
               help='how long to wait between requests')
-def main(input_filename, output_filename, sleep_time):
+def main(input_filename: str, output_filename: str, sleep_time: int):
     input_df = load_input_data(Path(input_filename))
     links = link_factory(input_df)
     df = df_factory(links, sleep_time)
