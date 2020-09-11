@@ -92,7 +92,7 @@ def df_factory(links: List[str], sleep_time: int=5) -> pd.DataFrame:
     # iterate over links
     for i, url in enumerate(links):
         dfs.append(visit_link_and_load_df(url))
-        # wait <10> seconds so you don't get borked
+        # wait <5> (or sleep_time) seconds so you don't get borked
         sleep(sleep_time)
         # verbose output
         if i % 10 == 0:

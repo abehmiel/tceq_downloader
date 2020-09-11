@@ -26,4 +26,4 @@
 
 `--output-filename` - the named output file csv (output file will have an index)
 
-`--sleep-time` - seconds to sleep between requests. Probably should be at least 3, default is 10
+`--sleep-time` - seconds to sleep between requests. Probably should be at least 3, default is 5
