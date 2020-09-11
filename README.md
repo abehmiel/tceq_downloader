@@ -20,10 +20,10 @@
 
 - Use the command line to run main.py with arguments:
 
-`python main.py --input-filename="sample.xlsx" --output-filename="out.csv" --sleep-time=10`
+`python main.py --input-filename="sample.xlsx" --output-filename="out.csv" --sleep-time=5`
 
 `--input-filename` - the file from your query in the working directory or a path to it
 
 `--output-filename` - the named output file csv (output file will have an index)
 
-`--sleep-time` - seconds to sleep beetween requests. Probably should be at least 3, default is 10
+`--sleep-time` - seconds to sleep between requests. Probably should be at least 3, default is 10
