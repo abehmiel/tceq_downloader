@@ -47,10 +47,11 @@ def link_factory(df: pd.DataFrame) -> list:
         incidents = df["INCIDENT NO."].unique()
         links = [BASE_URL + i for i in incidents]
         logger.info(f"Found {len(links)} links in data")
-        return links
     except:
+        links = []
         logger.info("Could not extract links from data")
-        return []
+    finally:
+        return links
 
 
 def visit_link_and_load_df(url: str) -> pd.DataFrame:
