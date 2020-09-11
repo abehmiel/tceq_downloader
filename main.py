@@ -1,5 +1,7 @@
-from pathlib import Path
+import os
+from time import sleep
 from tempfile import NamedTemporaryFile
+from pathlib import Path
 import requests
 import logging
 
@@ -7,6 +9,8 @@ import pandas as pd
 import click
 
 logger = logging.getLogger(__name__)
+FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+logging.basicConfig(level=logging.INFO, format=FORMAT)
 # a little hack to not have to scrape pages:
 # all the excel download links have this pattern, where
 # appending any incident number to the following string
@@ -26,7 +30,6 @@ def load_input_data(filename: Path) -> pd.DataFrame:
         raise ValueError("Input file could not be found")
 
 
-
 def link_factory(df: pd.DataFrame) -> list:
     """
     Transforms an input dataframe of tceq incidents to a
@@ -35,14 +38,13 @@ def link_factory(df: pd.DataFrame) -> list:
     :returns: list of str
     """
     try:
-        incidents = df["INCIDENT NO."].tolist()
+        incidents = df["INCIDENT NO."].unique()
         links = [BASE_URL + i for i in incidents]
         logger.info(f"Found {len(links)} links in data")
         return links
     except:
         logger.info("Could not extract links from data")
         return []
-
 
 
 def visit_link_and_load_df(url: str) -> pd.DataFrame:
@@ -55,32 +57,40 @@ def visit_link_and_load_df(url: str) -> pd.DataFrame:
     # visis page
     r = requests.get(url)
     # save as named temporary file
-    with tempfile.NamedTemporaryFile as temp:
-        # write excel binary
-        # you can't read excel from memory, apparently
-        with open(temp, 'wb') as f:
-            f.write(payload)
-    # load named file and append to dfs
-    return pd.read_excel(temp.name)
+    temp_xls = None
+    try:
+        # Windows suckage
+        with NamedTemporaryFile(suffix='.xls', delete=False) as temp_xls:
+            # write excel binary
+            # you can't read excel from memory, apparently
+            temp_xls.write(r.content)
+            # load named file and append to dfs
+            df = pd.read_excel(temp_xls.name)
+    except:
+        logger.warning(f"could not handle temporary file for {url}")
+        df = pd.DataFrame()
+    finally:
+        if temp_xls is not None:
+            os.remove(temp_xls.name)
+        return df
 
 
 def df_factory(links: list, sleep_time: int=10) -> pd.DataFrame:
     """
-    iterate over all the links
+    iterate over all the links, grab their data and
+    accumulate into a dataframe
     """
     dfs = []
     # iterate over links
     for i, url in enumerate(links):
-        try:
-            dfs.append(visit_link_and_load_df(url))
-            # wait <10> seconds so you don't get borked
-            sleep(sleep_time)
-        except:
-            logger.info(f"Could not obtain file for {url}")
+        dfs.append(visit_link_and_load_df(url))
+        # wait <10> seconds so you don't get borked
+        sleep(sleep_time)
         # verbose output
         if i % 10 == 0:
             logger.info(f"Progress: {i} of {len(links)}")
     df = pd.concat(dfs, sort=False).reset_index(drop=True)
+    return df
 
 
 @click.command()
