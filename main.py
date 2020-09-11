@@ -49,7 +49,7 @@ def link_factory(df: pd.DataFrame) -> list:
         logger.info(f"Found {len(links)} links in data")
     except:
         links = []
-        logger.info("Could not extract links from data")
+        logger.warning("Could not extract links from data")
     finally:
         return links
 
