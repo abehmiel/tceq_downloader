@@ -6,13 +6,12 @@ __author__      = "Abe Hmiel"
 __copyright__   = "Copyright 2020"
 
 import os
+import logging
 from time import sleep
 from tempfile import NamedTemporaryFile
 from pathlib import Path
-import requests
-import logging
-
 import pandas as pd
+import requests
 import click
 
 logger = logging.getLogger(__name__)
