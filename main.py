@@ -60,12 +60,12 @@ def visit_link_and_load_df(url: str) -> pd.DataFrame:
     :param: url - str
     :returns: df - pd.DataFame
     """
-    # visis page
+    # visit page
     r = requests.get(url)
     # save as named temporary file
     temp_xls = None
     try:
-        # Windows suckage
+        # Windows suckage - needs xls and to stay on disk after open context
         with NamedTemporaryFile(suffix='.xls', delete=False) as temp_xls:
             # write excel binary
             # you can't read excel from memory, apparently
