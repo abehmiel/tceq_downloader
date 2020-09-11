@@ -4,6 +4,7 @@ channels:
 dependencies:
   - click=7.0
   - pandas=1.0.1
+  - xlrd=1.2.0
   - python>=3.6.1
   - requests=2.22.0
 
