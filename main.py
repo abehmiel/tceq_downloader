@@ -37,7 +37,7 @@ def link_factory(df: pd.DataFrame) -> list:
     try:
         incidents = df["INCIDENT NO."].tolist()
         links = [BASE_URL + i for i in incidents]
-        logger.info("Found %d links in data" % len(links))
+        logger.info(f"Found {len(links)} links in data")
         return links
     except:
         logger.info("Could not extract links from data")
@@ -64,7 +64,7 @@ def visit_link_and_load_df(url: str) -> pd.DataFrame:
     return pd.read_excel(temp.name)
 
 
-def df_factory(links: list[str], sleep_time: int=10) -> pd.DataFrame:
+def df_factory(links: list, sleep_time: int=10) -> pd.DataFrame:
     """
     iterate over all the links
     """
@@ -76,26 +76,27 @@ def df_factory(links: list[str], sleep_time: int=10) -> pd.DataFrame:
             # wait <10> seconds so you don't get borked
             sleep(sleep_time)
         except:
-            logger.info("Could not obtain file for %s" % url)
+            logger.info(f"Could not obtain file for {url}")
         # verbose output
         if i % 10 == 0:
-            logger.info("Progress: %i of %i" % (i, len(links)))
+            logger.info(f"Progress: {i} of {len(links)}")
     df = pd.concat(dfs, sort=False).reset_index(drop=True)
 
 
 @click.command()
 @click.option('--input-filename', default="sample.xls",
               help='the input filename from original TCEQ query')
-@click.option('--sleep_time', default=10,
-              help='how long to wait between requests')
 @click.option('--output-filename', default="output.csv",
               help='the output csv filename')
-def main():
+@click.option('--sleep-time', default=10,
+              help='how long to wait between requests')
+def main(input_filename, output_filename, sleep_time):
     input_df = load_input_data(Path(input_filename))
     links = link_factory(input_df)
     df = df_factory(links, sleep_time)
-    df.to_csv(Path(output_filenae)
+    df.to_csv(Path(output_filename))
+    logger.info(f"wrote combined DataFrame to {output}")
 
 
-if __name__=='__main__':
+if __name__ == "__main__":
     main()
