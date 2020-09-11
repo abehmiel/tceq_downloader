@@ -1,8 +1,9 @@
-import pandas as pd
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 import requests
 import logging
+
+import pandas as pd
 import click
 
 logger = logging.getLogger(__name__)
@@ -25,6 +26,7 @@ def load_input_data(filename: Path) -> pd.DataFrame:
         raise ValueError("Input file could not be found")
 
 
+
 def link_factory(df: pd.DataFrame) -> list:
     """
     Transforms an input dataframe of tceq incidents to a
@@ -40,6 +42,7 @@ def link_factory(df: pd.DataFrame) -> list:
     except:
         logger.info("Could not extract links from data")
         return []
+
 
 
 def visit_link_and_load_df(url: str) -> pd.DataFrame:
@@ -60,6 +63,7 @@ def visit_link_and_load_df(url: str) -> pd.DataFrame:
     # load named file and append to dfs
     return pd.read_excel(temp.name)
 
+
 def df_factory(links: list[str], sleep_time: int=10) -> pd.DataFrame:
     """
     iterate over all the links
@@ -77,6 +81,7 @@ def df_factory(links: list[str], sleep_time: int=10) -> pd.DataFrame:
         if i % 10 == 0:
             logger.info("Progress: %i of %i" % (i, len(links)))
     df = pd.concat(dfs, sort=False).reset_index(drop=True)
+
 
 @click.command()
 @click.option('--input-filename', default="sample.xls",
