@@ -9,7 +9,7 @@ import pandas as pd
 import click
 
 logger = logging.getLogger(__name__)
-FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+FORMAT = '%(asctime)s - %(levelname)s - %(message)s'
 logging.basicConfig(level=logging.INFO, format=FORMAT)
 # a little hack to not have to scrape pages:
 # all the excel download links have this pattern, where
@@ -51,7 +51,7 @@ def visit_link_and_load_df(url: str) -> pd.DataFrame:
     """
     Transform a bytes object from  a url visit
     into a pandas dataframe
-    :param: url - bytes
+    :param: url - str
     :returns: df - pd.DataFame
     """
     # visis page
