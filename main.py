@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+
+"""TCEQ rich data downloader"""
+
+__author__      = "Abe Hmiel"
+__copyright__   = "Copyright 2020"
+
 import os
 from time import sleep
 from tempfile import NamedTemporaryFile
