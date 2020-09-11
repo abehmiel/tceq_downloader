@@ -20,7 +20,7 @@
 
 - Use the command line to run main.py with arguments:
 
-`python main.py --input-filename="sample.xlsx" --output-filename="out.csv" --sleep-time=5`
+`python main.py --input-filename="sample.xls" --output-filename="out.csv" --sleep-time=5`
 
 `--input-filename` - the file from your query in the working directory or a path to it
 
