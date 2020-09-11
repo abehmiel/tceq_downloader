@@ -2,6 +2,8 @@
 
 ## Requirements:
 
+`python >= 3.6.1`
+
 `click pandas requests`
 
 ## Instructions: 
