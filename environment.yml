@@ -4,5 +4,6 @@ channels:
 dependencies:
   - click=7.0
   - pandas=1.0.1
+  - python>=3.6.1
   - requests=2.22.0
 
